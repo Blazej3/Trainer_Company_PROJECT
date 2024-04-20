@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { AgGridReact } from 'ag-grid-react'; // AG Grid Component
 
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
@@ -6,8 +6,8 @@ import "ag-grid-community/styles/ag-theme-material.css"; // Optional Theme appli
 
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import IconButton from '@mui/material/IconButton';
 
+import IconButton from '@mui/material/IconButton';
 
 
 import AddCustomer from "./AddCustomer";
@@ -15,10 +15,11 @@ import EditCustomer from "./EditCustomer";
 import AddTrainingToCustomer from "./AddTrainingToCustomer"
 
 
+
 function Customerlist() {
 
 
-
+    const gridRef = useRef(null); 
     const [customers, setCustomers] = useState([]);
 
     const [colDefs] = useState([
@@ -92,7 +93,7 @@ function Customerlist() {
     }
 
     const deleteCustomer = (url) => {
-        if (window.confirm("are you sure?")) {
+        if (window.confirm("Are you sure you want to delete this customer?")) {
             fetch(url, { method: 'DELETE' })
                 .then(response => {
                     if (!response.ok)
@@ -143,19 +144,36 @@ function Customerlist() {
 
 
 
-
+    const onBtExport = useCallback(() => {
+        gridRef.current.api.exportDataAsCsv();
+      }, []);
 
     return (
 
         <div className="ag-theme-material" style={{ height: 600 }}>
+          
             <AddCustomer saveCustomer={saveCustomer} />
+
+            <div>
+          <button
+            onClick={onBtExport}
+            style={{ marginBottom: "5px", fontWeight: "bold" }}
+          >
+            Export to Excel
+          </button>
+        </div>
+            
+        
             <AgGridReact
+            ref={gridRef}
                 rowData={customers}
                 columnDefs={colDefs}
                 pagination={true}
                 paginationAutoPageSize={true}
 
             />
+            
+            
         </div>
     )
 

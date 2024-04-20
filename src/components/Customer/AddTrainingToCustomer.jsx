@@ -81,7 +81,7 @@ export default function AddTrainingToCustomer(props) {
                         id="combo-box-demo"
                         options={Activities}
                         value={selectedActivity}
-                        onChange={(event, activity) => {
+                        onChange={( activity) => {
                             setSelectedActivity(activity);
                         }}
                         renderInput={(params) => <TextField {...params} label="Activity" />}

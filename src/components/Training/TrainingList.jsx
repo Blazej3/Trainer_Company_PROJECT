@@ -2,8 +2,12 @@ import { useEffect, useState } from "react";
 import { AgGridReact } from 'ag-grid-react'; // AG Grid Component
 import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
 import "ag-grid-community/styles/ag-theme-material.css"; // Optional Theme applied to the grid
-import dayjs from 'dayjs';
 
+
+import DeleteIcon from '@mui/icons-material/Delete';
+import IconButton from '@mui/material/IconButton';
+
+import dayjs from 'dayjs';
 
 
 function Traininglist() {
@@ -27,6 +31,13 @@ function Traininglist() {
                 params.data.customer.firstname + " " + params.data.customer.lastname,
             filter: true,
         },
+        {
+            cellRenderer: params =>
+                <IconButton size="small" color="error" onClick={() => deleteTraining(params.data.id)}>
+                    < DeleteIcon />
+                </IconButton>
+        },
+ 
     ]);
 
 
@@ -50,7 +61,19 @@ function Traininglist() {
             .catch(err => console.error(err))
     };
 
+    const deleteTraining = (id) => {
+        if (window.confirm("Are you sure you want to delete this training?")) {
+            fetch(`https://customerrestservice-personaltraining.rahtiapp.fi/api/trainings/${id}`, { method: 'DELETE' })
+                .then(response => {
+                    if (!response.ok)
+                        throw new Error("Error in deletion: " + response.statusText);
     
+                    return response.json();
+                })
+                .then(() => fetchTrainings())
+                .catch(err => console.error(err))
+        }
+    };
 
 
     return (

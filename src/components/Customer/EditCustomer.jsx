@@ -55,7 +55,7 @@ export default function EditCustomer(props) {
 
     return (
         <div>
-            <IconButton onClick={handleClickOpen}>
+            <IconButton onClick={handleClickOpen} >
                 <EditIcon/>
             </IconButton>
             <Dialog open={open} onClose={handleClose} >

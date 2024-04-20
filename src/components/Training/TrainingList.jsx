@@ -21,26 +21,25 @@ function Traininglist() {
         {
             headerName: "Date",
             valueGetter: (params) => dayjs(params.data.date).format("DD.MM.YYYY HH:mm"),
-            filter: true,
+            filter: true, width: 150
         },
-        { field: "duration", filter: true },
-        { field: "activity", filter: true },
+        { field: "duration", filter: true, width: 150 },
+        { field: "activity", filter: true, width: 150 },
         {
             headerName: "Customer",
             valueGetter: (params) =>
                 params.data.customer.firstname + " " + params.data.customer.lastname,
-            filter: true,
+            filter: true, width: 150
         },
         {
+            width: 100,
             cellRenderer: params =>
                 <IconButton size="small" color="error" onClick={() => deleteTraining(params.data.id)}>
                     < DeleteIcon />
                 </IconButton>
         },
- 
+
     ]);
-
-
 
 
 
@@ -67,7 +66,7 @@ function Traininglist() {
                 .then(response => {
                     if (!response.ok)
                         throw new Error("Error in deletion: " + response.statusText);
-    
+
                     return response.json();
                 })
                 .then(() => fetchTrainings())

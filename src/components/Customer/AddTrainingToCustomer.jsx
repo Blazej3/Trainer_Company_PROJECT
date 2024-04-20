@@ -10,6 +10,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Autocomplete from '@mui/material/Autocomplete';
+import IconButton from '@mui/material/IconButton';
+
+import AddIcon from '@mui/icons-material/Add';
+
 
 export default function AddTrainingToCustomer(props) {
     const [open, setOpen] = useState(false);
@@ -70,9 +74,9 @@ export default function AddTrainingToCustomer(props) {
 
     return (
         <div>
-            <Button style={{ margin: 10 }} variant="outlined" onClick={handleClickOpen}>
-                +
-            </Button>
+            <IconButton  variant="outlined" onClick={handleClickOpen}>
+                <AddIcon/>
+            </IconButton>
             <Dialog open={open} onClose={handleClose} >
                 <DialogTitle>Add Training ({props.customer.firstname} {props.customer.lastname})</DialogTitle>
                 <DialogContent>
@@ -81,7 +85,7 @@ export default function AddTrainingToCustomer(props) {
                         id="combo-box-demo"
                         options={Activities}
                         value={selectedActivity}
-                        onChange={( activity) => {
+                        onChange={(event, activity) => {
                             setSelectedActivity(activity);
                         }}
                         renderInput={(params) => <TextField {...params} label="Activity" />}
@@ -90,7 +94,7 @@ export default function AddTrainingToCustomer(props) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DateTimePicker
                             onChange={(date) => {
-                                setNewTraining({ ...newTraining, date: date.toISOString().split('T')[0] });
+                                setNewTraining({ ...newTraining, date: date.toISOString()});
                             }}
                             label="Date"
                             value={selectedDate}

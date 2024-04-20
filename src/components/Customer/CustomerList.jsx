@@ -6,6 +6,8 @@ import "ag-grid-community/styles/ag-theme-material.css"; // Optional Theme appli
 
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
+
 
 import IconButton from '@mui/material/IconButton';
 
@@ -19,40 +21,36 @@ import AddTrainingToCustomer from "./AddTrainingToCustomer"
 function Customerlist() {
 
 
-    const gridRef = useRef(null); 
+    const gridRef = useRef(null);
     const [customers, setCustomers] = useState([]);
 
     const [colDefs] = useState([
-        { field: "firstname", filter: true, width: 150 },
-        { field: "lastname", filter: true, width: 150 },
-        { field: "streetaddress", filter: true, width: 180 },
-        { field: "postcode", filter: true, width: 150 },
-        { field: "city", filter: true, width: 120 },
-        { field: "email", filter: true, width: 150 },
-        { field: "phone", filter: true, width: 150 },
-
+        { field: "firstname", filter: true, sortable: false, width: 150 },
+        { field: "lastname", filter: true, sortable: false, width: 150 },
+        { field: "streetaddress", filter: true, sortable: false, width: 180 },
+        { field: "postcode", filter: true, sortable: false, width: 150 },
+        { field: "city", filter: true, sortable: false, width: 120 },
+        { field: "email", filter: true, sortable: false, width: 150 },
+        { field: "phone", filter: true, sortable: false, width: 150 },
         {
+            width: 100,
             cellRenderer: params =>
-                <AddTrainingToCustomer size="small" saveTraining={saveTraining} customer={params.data}  > 
-
-                </AddTrainingToCustomer>
-
-        },
-
-
-        {
-            cellRenderer: params =>
-                <EditCustomer size="small" updateCustomer={updateCustomer} customer={params.data}>
-
-                </EditCustomer>
+                <AddTrainingToCustomer size="small" saveTraining={saveTraining} customer={params.data} />
         },
         {
+            width: 100,
             cellRenderer: params =>
-                <IconButton size="small" color="error" onClick={() => deleteCustomer(params.data._links.customer.href)}>
-                    < DeleteIcon />
+                <EditCustomer size="small" updateCustomer={updateCustomer} customer={params.data} />
+        },
+        {
+            width: 100,
+            cellRenderer: params =>
+                <IconButton size="small" color="error" onClick={() => deleteCustomer(params.data._links.customer.href)} >
+                    <DeleteIcon />
                 </IconButton>
         },
     ]);
+    
 
 
 
@@ -133,11 +131,11 @@ function Customerlist() {
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Error when adding a Training: " + response.statusText);
-                    
+
                 }
                 return response.json();
             })
-            .then(()=> fetchCustomers())
+            .then(() => fetchCustomers())
             .catch(err => console.error(err))
     };
 
@@ -146,34 +144,33 @@ function Customerlist() {
 
     const onBtExport = useCallback(() => {
         gridRef.current.api.exportDataAsCsv();
-      }, []);
+    }, []);
 
     return (
 
         <div className="ag-theme-material" style={{ height: 600 }}>
-          
-            <AddCustomer saveCustomer={saveCustomer} />
 
-            <div>
-          <button
-            onClick={onBtExport}
-            style={{ marginBottom: "5px", fontWeight: "bold" }}
-          >
-            Export to Excel
-          </button>
-        </div>
-            
-        
+            <div style={{ display: 'flex', alignItems: 'center' }}>
+                <AddCustomer saveCustomer={saveCustomer} />
+                <IconButton
+                    onClick={onBtExport}
+                    style={{ marginLeft: "10px", fontWeight: "bold"}}
+                >
+                    <FileDownloadIcon />
+                </IconButton>
+            </div>
+
+
             <AgGridReact
-            ref={gridRef}
+                ref={gridRef}
                 rowData={customers}
                 columnDefs={colDefs}
                 pagination={true}
                 paginationAutoPageSize={true}
 
             />
-            
-            
+
+
         </div>
     )
 

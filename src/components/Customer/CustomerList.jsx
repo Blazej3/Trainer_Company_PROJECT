@@ -143,8 +143,20 @@ function Customerlist() {
 
 
     const onBtExport = useCallback(() => {
-        gridRef.current.api.exportDataAsCsv();
+        const api = gridRef.current.api;
+        const columnIdsToExclude = ["addTraining", "editCustomer", "deleteCustomer"];
+        const columnDefs = api.getColumnDefs().filter(col => !columnIdsToExclude.includes(col.field));
+        const columnsToExport = columnDefs.map(col => col.field);
+    
+        const params = {
+            suppressQuotes: true,
+            columnKeys: columnsToExport,
+        };
+    
+        api.exportDataAsCsv(params);
     }, []);
+
+    
 
     return (
 

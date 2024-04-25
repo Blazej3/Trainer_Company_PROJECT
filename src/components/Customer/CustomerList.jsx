@@ -25,25 +25,28 @@ function Customerlist() {
     const [customers, setCustomers] = useState([]);
 
     const [colDefs] = useState([
-        { field: "firstname", filter: true, sortable: false, width: 150 },
-        { field: "lastname", filter: true, sortable: false, width: 150 },
-        { field: "streetaddress", filter: true, sortable: false, width: 180 },
-        { field: "postcode", filter: true, sortable: false, width: 150 },
-        { field: "city", filter: true, sortable: false, width: 120 },
-        { field: "email", filter: true, sortable: false, width: 150 },
-        { field: "phone", filter: true, sortable: false, width: 150 },
+        { field: "firstname", filter: true, width: 150 },
+        { field: "lastname", filter: true, width: 150 },
+        { field: "streetaddress", filter: true, width: 180 },
+        { field: "postcode", filter: true,  width: 150 },
+        { field: "city", filter: true, width: 120 },
+        { field: "email", filter: true, width: 180 },
+        { field: "phone", filter: true, width: 150 },
         {
             width: 100,
+            sortable: false,
             cellRenderer: params =>
                 <AddTrainingToCustomer size="small" saveTraining={saveTraining} customer={params.data} />
         },
         {
             width: 100,
+            sortable: false,
             cellRenderer: params =>
                 <EditCustomer size="small" updateCustomer={updateCustomer} customer={params.data} />
         },
         {
             width: 100,
+            sortable: false,
             cellRenderer: params =>
                 <IconButton size="small" color="error" onClick={() => deleteCustomer(params.data._links.customer.href)} >
                     <DeleteIcon />

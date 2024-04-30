@@ -70,12 +70,12 @@ export default function AddTrainingToCustomer(props) {
         handleClose();
     };
 
-    
+
 
     return (
         <div>
-            <IconButton  variant="outlined" onClick={handleClickOpen}>
-                <AddIcon/>
+            <IconButton variant="outlined" onClick={handleClickOpen}>
+                <AddIcon />
             </IconButton>
             <Dialog open={open} onClose={handleClose} >
                 <DialogTitle>Add Training ({props.customer.firstname} {props.customer.lastname})</DialogTitle>
@@ -94,7 +94,7 @@ export default function AddTrainingToCustomer(props) {
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DateTimePicker
                             onChange={(date) => {
-                                setNewTraining({ ...newTraining, date: date.toISOString()});
+                                setNewTraining({ ...newTraining, date: date.toISOString() });
                             }}
                             label="Date"
                             value={selectedDate}

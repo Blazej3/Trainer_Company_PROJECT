@@ -1,21 +1,15 @@
 import { useEffect, useState } from "react";
-import { AgGridReact } from 'ag-grid-react'; // AG Grid Component
-import "ag-grid-community/styles/ag-grid.css"; // Mandatory CSS required by the grid
-import "ag-grid-community/styles/ag-theme-material.css"; // Optional Theme applied to the grid
-
-
+import { AgGridReact } from 'ag-grid-react';
+import "ag-grid-community/styles/ag-grid.css";
+import "ag-grid-community/styles/ag-theme-material.css";
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
-
+import CircularProgress from '@mui/material/CircularProgress';
 import dayjs from 'dayjs';
 
-
 function Traininglist() {
-
     const [training, setTraining] = useState([]);
-
-
-
+    const [loading, setLoading] = useState(true);
 
     const [colDefs] = useState([
         {
@@ -38,26 +32,28 @@ function Traininglist() {
                     < DeleteIcon />
                 </IconButton>
         },
-
     ]);
-
-
 
     useEffect(() => {
         fetchTrainings();
     }, []);
 
-
-
     const fetchTrainings = () => {
-        return fetch('https://customerrestservice-personaltraining.rahtiapp.fi/gettrainings')
+        setLoading(true);
+        fetch('https://customerrestservice-personaltraining.rahtiapp.fi/gettrainings')
             .then(response => {
                 if (!response.ok)
                     throw new Error("Error in fetch: " + response.statusText);
-
                 return response.json();
-            }).then(data => setTraining(data))
-            .catch(err => console.error(err))
+            })
+            .then(data => {
+                setTraining(data);
+                setLoading(false);
+            })
+            .catch(err => {
+                console.error(err);
+                setLoading(false);
+            });
     };
 
     const deleteTraining = (id) => {
@@ -66,7 +62,6 @@ function Traininglist() {
                 .then(response => {
                     if (!response.ok)
                         throw new Error("Error in deletion: " + response.statusText);
-
                     return response.json();
                 })
                 .then(() => fetchTrainings())
@@ -74,22 +69,19 @@ function Traininglist() {
         }
     };
 
-
     return (
-
-        <div className="ag-theme-material" style={{ height: 600 }}>
-
-            <AgGridReact
-                rowData={training}
-                columnDefs={colDefs}
-                pagination={true}
-                paginationAutoPageSize={true}
-            />
+        <div style={{ position: 'relative' }}>
+            {loading && <CircularProgress style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' }} />}
+            <div className="ag-theme-material" style={{ height: 600, visibility: loading ? 'hidden' : 'visible' }}>
+                <AgGridReact
+                    rowData={training}
+                    columnDefs={colDefs}
+                    pagination={true}
+                    paginationAutoPageSize={true}
+                />
+            </div>
         </div>
     )
-
-
-
 }
 
 export default Traininglist;

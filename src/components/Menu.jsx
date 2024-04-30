@@ -7,10 +7,13 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
 import PersonIcon from '@mui/icons-material/Person';
+import BarChartIcon from '@mui/icons-material/BarChart';
 
-export default function BasicMenu({ handleCustomerClick, handleTrainingClick, handleCalendarClick }) {
+export default function BasicMenu({ handleCustomerClick, handleTrainingClick, handleCalendarClick, handleStatisticsClick }) {
+
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
+
     const handleClick = (event) => {
       setAnchorEl(event.currentTarget);
     };
@@ -42,6 +45,7 @@ export default function BasicMenu({ handleCustomerClick, handleTrainingClick, ha
           <MenuItem onClick={handleCustomerClick}><PersonIcon/>Customers</MenuItem>
           <MenuItem onClick={handleTrainingClick}><DirectionsRunIcon/>Trainings</MenuItem>
           <MenuItem onClick={handleCalendarClick}><CalendarMonthIcon/>Calendar</MenuItem> 
+          <MenuItem onClick={handleStatisticsClick}><BarChartIcon/>Statistics</MenuItem> 
         </Menu>
       </div>
     );
